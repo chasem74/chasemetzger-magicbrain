@@ -7,6 +7,7 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import FaceRecognitionResult from './components/FaceRecognitionResults/FaceRecognitionResults';
+import SignIn from './components/SignIn/SignIn';
 
 import './App.css';
 
@@ -77,6 +78,7 @@ class App extends Component {
 		return (
 			<div className="App">
 				<Particles className='particles' style={{width: '100%', height: '100%'}} params={particleOptions} />
+				<SignIn />
 				<Navigation />
 				<Logo />
 				<Rank />
