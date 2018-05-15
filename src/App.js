@@ -30,6 +30,9 @@ const particleOptions = {
 	}
 };
 
+const SIGNIN_ROUTE = 'signin';
+const FACE_DETECT_ROUTE = 'detect';
+
 class App extends Component {
 	constructor(){
 		super();
@@ -38,6 +41,7 @@ class App extends Component {
 			input: '',
 			imageUrl: '',
 			boxes: [],
+			route: SIGNIN_ROUTE,
 		};
 	}
 
@@ -78,12 +82,18 @@ class App extends Component {
 		return (
 			<div className="App">
 				<Particles className='particles' style={{width: '100%', height: '100%'}} params={particleOptions} />
-				<SignIn />
 				<Navigation />
-				<Logo />
-				<Rank />
-				<ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
-				{<FaceRecognitionResult boxes={this.state.boxes} imageUrl={this.state.imageUrl} />}
+				
+				{this.state.route === SIGNIN_ROUTE ?
+					<SignIn />
+					:
+					<div>
+						<Logo />
+						<Rank />
+						<ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
+						<FaceRecognitionResult boxes={this.state.boxes} imageUrl={this.state.imageUrl} />
+					</div>
+				}
 			</div>
 		);
 	}
