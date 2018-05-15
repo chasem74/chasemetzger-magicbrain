@@ -54,7 +54,6 @@ class App extends Component {
 		});
 
 		return boxes;
-//		console.log(document.getElementsByClassName('inputImage'));
 	}
 
 	setBoxesState = (boxes) => {
@@ -82,7 +81,6 @@ class App extends Component {
 				<Logo />
 				<Rank />
 				<ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
-				{/*this.state.boxes.map(box => <FaceRecognitionResult box={box} imageUrl={this.state.imageUrl} />)*/}
 				{<FaceRecognitionResult boxes={this.state.boxes} imageUrl={this.state.imageUrl} />}
 			</div>
 		);
