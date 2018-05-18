@@ -20,8 +20,8 @@ constructor(props){
 		this.setState({password: event.target.value});
 	}
 
-	onNameChange = (event) => { 
-		this.setState({name: event.target.data})
+	onNameChange = (event) => {
+		this.setState({name: event.target.value});
 	}
 
 	onSubmit = () => {
