@@ -31,29 +31,32 @@ const particleOptions = {
 	}
 };
 
+const initialState = {
+	input: '',
+	imageUrl: '',
+	boxes: [],
+	route: SIGNIN_ROUTE,
+	isSignedIn: false,
+	user: {
+		id: '',
+		name: '',
+		email: '',
+		entries: 0,
+		joined: ''
+	}
+};
+
 const SIGNIN_ROUTE = 'signin';
 const SIGNOUT_ROUTE = 'signout';
 const HOME_ROUTE = 'home';
 const REGISTER_ROUTE = 'register';
 
 class App extends Component {
+	
 	constructor(){
 		super();
 
-		this.state = {
-			input: '',
-			imageUrl: '',
-			boxes: [],
-			route: SIGNIN_ROUTE,
-			isSignedIn: false,
-			user: {
-				id: '',
-				name: '',
-				email: '',
-				entries: 0,
-				joined: ''
-			}
-		};
+		this.state = initialState;
 	}
 
 	calculateFaceLocation = (data) => {
@@ -113,7 +116,7 @@ class App extends Component {
 
 	onRouteChange = (route) => {
 		if(route === SIGNOUT_ROUTE){
-			this.setState({isSignedIn: false});
+			this.setState(initialState);
 		}else if(route === HOME_ROUTE){
 			this.setState({isSignedIn: true});
 		}
