@@ -9,6 +9,10 @@ constructor(props){
 			email: '',
 			password: '',
 			name: '',
+			errorData: {
+				failedToRegister: false,
+				message: ''
+			}
 		};
 	}
 
@@ -38,9 +42,16 @@ constructor(props){
 		})
 		.then(response => response.json())
 		.then(user => {
-			if(user){
+			if(user.id){
 				this.props.loadUser(user);	
 				this.props.onRouteChange('home');
+			}else{
+				this.setState({
+					errorData:{
+						failedToRegister: true,
+						message: 'Unable to register'
+					}
+				});
 			}
 		});
 	}
@@ -52,6 +63,12 @@ constructor(props){
 					<div className="measure">
 						<fieldset id="sign_up" className="ba b--transparent ph0 mh0">
 							<legend className="f1 fw6 ph0 mh0">Register</legend>
+							{
+								this.state.errorData.failedToRegister ?
+									<p className='ba b--transparent red'>{this.state.errorData.message}</p>
+									: <p></p>
+							}
+
 								<div className="mt3">
 									<label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
 									<input
