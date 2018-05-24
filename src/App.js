@@ -31,6 +31,11 @@ const particleOptions = {
 	}
 };
 
+const SIGNIN_ROUTE = 'signin';
+const SIGNOUT_ROUTE = 'signout';
+const HOME_ROUTE = 'home';
+const REGISTER_ROUTE = 'register';
+
 const initialState = {
 	input: '',
 	imageUrl: '',
@@ -45,11 +50,6 @@ const initialState = {
 		joined: ''
 	}
 };
-
-const SIGNIN_ROUTE = 'signin';
-const SIGNOUT_ROUTE = 'signout';
-const HOME_ROUTE = 'home';
-const REGISTER_ROUTE = 'register';
 
 class App extends Component {
 	
