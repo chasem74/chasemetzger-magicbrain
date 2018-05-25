@@ -1,8 +1,10 @@
 import React from 'react';
 
+import Constants from '../../constants';
+
 class Register extends React.Component {
 	
-constructor(props){
+	constructor(props){
 		super(props);
 
 		this.state = {
@@ -29,7 +31,7 @@ constructor(props){
 	}
 
 	onSubmit = () => {
-		fetch('http://localhost:3000/register', {
+		fetch(Constants.BASE_URL + '/register', {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json'

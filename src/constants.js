@@ -3,7 +3,7 @@ const SIGNOUT_ROUTE = 'signout';
 const HOME_ROUTE = 'home';
 const REGISTER_ROUTE = 'register';
 
-const BASE_URL = 'https://git.heroku.com/aqueous-eyrie-86125.git';
+const BASE_URL = 'https://aqueous-eyrie-86125.herokuapp.com';
 
 const Constants = {
 	BASE_URL,
