@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
 
+import Constants from './constants';
+
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
@@ -24,16 +26,11 @@ const particleOptions = {
 	}
 };
 
-const SIGNIN_ROUTE = 'signin';
-const SIGNOUT_ROUTE = 'signout';
-const HOME_ROUTE = 'home';
-const REGISTER_ROUTE = 'register';
-
 const initialState = {
 	input: '',
 	imageUrl: '',
 	boxes: [],
-	route: SIGNIN_ROUTE,
+	route: Constants.SIGNIN_ROUTE,
 	isSignedIn: false,
 	user: {
 		id: '',
@@ -79,7 +76,7 @@ class App extends Component {
 	onImageSubmit = () => {
 		this.setState({imageUrl: this.state.input});
 		
-		fetch('http://localhost:3000/imageurl', {
+		fetch(Constants.BASE_URL + '/imageurl', {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json'
@@ -91,7 +88,7 @@ class App extends Component {
 		.then(response => response.json())
 		.then(response => {
 			if(response){
-				fetch('http://localhost:3000/image', {
+				fetch(Constants.BASE_URL + '/image', {
 					method: 'put',
 					headers: {
 						'Content-Type': 'application/json'
@@ -116,9 +113,9 @@ class App extends Component {
 	}
 
 	onRouteChange = (route) => {
-		if(route === SIGNOUT_ROUTE){
+		if(route === Constants.SIGNOUT_ROUTE){
 			this.setState(initialState);
-		}else if(route === HOME_ROUTE){
+		}else if(route === Constants.HOME_ROUTE){
 			this.setState({isSignedIn: true});
 		}
 		
@@ -144,14 +141,14 @@ class App extends Component {
 				<Particles className='particles' style={{width: '100%', height: '100%'}} params={particleOptions} />
 				<Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
 				
-				{route === HOME_ROUTE ?
+				{route === Constants.HOME_ROUTE ?
 					<div>
 						<Logo />
 						<Rank name={user.name} entries={user.entries}/>
 						<ImageLinkForm onInputChange={this.onInputChange} onImageSubmit={this.onImageSubmit} />
 						<FaceRecognitionResult boxes={boxes} imageUrl={imageUrl}/>
 					</div>
-					: (route === SIGNIN_ROUTE
+					: (route === Constants.SIGNIN_ROUTE
 					? <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
 					: <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
 					)

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Constants from '../../constants';
+
 class SignIn extends React.Component {
 
 	constructor(props){
@@ -20,7 +22,7 @@ class SignIn extends React.Component {
 	}
 
 	onSubmitSignIn = () => {
-		fetch('http://localhost:3000/signin', {
+		fetch(Constants.BASE_URL + '/signin', {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json'
