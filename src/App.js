@@ -40,6 +40,8 @@ const initialState = {
 		id: '',
 		name: '',
 		email: '',
+		pet: '',
+		age: '',
 		entries: 0,
 		joined: ''
 	}
@@ -152,7 +154,7 @@ class App extends Component {
 				<Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} toggleModal={this.toggleProfileModal}/>
 				{isProfileOpen &&
 						<ProfileModal>
-							<Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleProfileModal}/>
+							<Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleProfileModal} user={user}/>
 						</ProfileModal>
 				}
 				{route === Constants.HOME_ROUTE ?
