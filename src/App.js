@@ -154,7 +154,7 @@ class App extends Component {
 				<Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} toggleModal={this.toggleProfileModal}/>
 				{isProfileOpen &&
 						<ProfileModal>
-							<Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleProfileModal} user={user}/>
+							<Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleProfileModal} user={user} loadUser={this.loadUser}/>
 						</ProfileModal>
 				}
 				{route === Constants.HOME_ROUTE ?

@@ -1,6 +1,9 @@
 import React from 'react';
 import './Profile.css';
 
+import Constants from '../../constants';
+
+
 class Profile extends React.Component{
 
 	constructor(props){
@@ -29,8 +32,22 @@ class Profile extends React.Component{
 		}
 	}
 
+	onProfileUpdate = (data) => {
+		fetch(Constants.BASE_URL + `/profile/${this.props.user.id}`, {
+			method: 'post',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify({formInput: data})
+		})
+		.then(response => {
+			this.props.toggleModal();
+			this.props.loadUser({...this.props.user, ...data});
+		})
+		.catch(console.log);
+	}
+
 	render(){
 		const {user, toggleModal} = this.props;
+		const {name, age, pet} = this.state;
 		return (
 			<div className="profile-modal">
 				<article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 center shadow-5 bg-white">
@@ -40,13 +57,14 @@ class Profile extends React.Component{
 						className="h3 w3 dib"
 						alt="avatar"
 						/>
-						<h1>{user.name}</h1>
+						<h1>{name}</h1>
 						<h4>Images submitted: {user.entries}</h4>
 						<p>Member since: {new Date(user.joined).toLocaleDateString()}</p>
 						<hr />
 
 						<label className="mt2 fw6" htmlFor="user-name">Name: </label>
 						<input
+						onChange={this.onFormChange}
 						className="pa2 ba w-100"
 						placeholder={user.name}
 						type="text"
@@ -75,6 +93,7 @@ class Profile extends React.Component{
 						<div className="mt4" style={{display: 'flex', justifyContent: 'space-evenly'}}>
 							<button
 							className="b pa2 grow pointer hover-white w-40 bg-light-blue b--black-20"
+							onClick={() => this.onProfileUpdate({name, age, pet})}
 							>
 								Save
 							</button>
