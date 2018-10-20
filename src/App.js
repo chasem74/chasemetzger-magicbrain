@@ -30,7 +30,7 @@ const initialState = {
 	input: '',
 	imageUrl: '',
 	boxes: [],
-	route: Constants.SIGNIN_ROUTE,
+	route: Constants.HOME_ROUTE,
 	isSignedIn: false,
 	user: {
 		id: '',
