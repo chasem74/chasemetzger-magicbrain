@@ -31,7 +31,7 @@ const initialState = {
 	imageUrl: '',
 	boxes: [],
 	route: Constants.HOME_ROUTE,
-	isSignedIn: false,
+	isSignedIn: true,
 	user: {
 		id: '',
 		name: '',
