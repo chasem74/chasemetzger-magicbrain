@@ -2,6 +2,8 @@ import React from 'react';
 
 import Constants from '../../constants';
 
+import './SignIn.css';
+
 class SignIn extends React.Component {
 
 	constructor(props){
@@ -52,7 +54,7 @@ class SignIn extends React.Component {
 								<div className="mt3">
 									<label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
 									<input
-									className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+									className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 hover-black"
 									type="email"
 									name="email-address"
 									id="email-address"
@@ -61,7 +63,7 @@ class SignIn extends React.Component {
 								<div className="mv3">
 									<label className="db fw6 lh-copy f6" htmlu="password">Password</label>
 									<input
-									className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+									className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 hover-black"
 									type="password"
 									name="password"
 									id="password"
