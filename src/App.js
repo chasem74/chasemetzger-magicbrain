@@ -14,7 +14,7 @@ import Register from './components/Register/Register';
 import ProfileModal from './components/Modal/ProfileModal';
 import Profile from './components/Profile/Profile'
 
-import './App.css'
+import './App.css';
 
 const particleOptions = {
 	particles: {
