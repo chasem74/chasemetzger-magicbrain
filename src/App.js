@@ -70,8 +70,10 @@ class App extends Component {
 				if(data && data.id){
 					fetch(Constants.BASE_URL + `/profile/${data.id}`, {
 						method: 'get',
-						'Content-Type': 'application/json',
-						'Authorization': token
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': token
+						}
 					})
 					.then(response => response.json())
 					.then(user => {
