@@ -47,8 +47,6 @@ const initialState = {
 	}
 };
 
-console.log(Constants.BASE_URL);
-
 class App extends Component {
 	
 	constructor(){
