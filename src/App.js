@@ -55,6 +55,37 @@ class App extends Component {
 		this.state = initialState;
 	}
 
+	componentDidMount(){
+		const token = window.sessionStorage.getItem('token');
+		if(token){
+			fetch(Constants.BASE_URL + '/signin', {
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': token
+				}
+			})
+			.then(response => response.json())
+			.then(data => {
+				if(data && data.id){
+					fetch(Constants.BASE_URL + `/profile/${data.id}`, {
+						method: 'get',
+						'Content-Type': 'application/json',
+						'Authorization': token
+					})
+					.then(response => response.json())
+					.then(user => {
+						if(user && user.email){
+							this.loadUser(user);
+							this.onRouteChange('home');
+						}
+					})
+				}
+			})
+			.catch(console.log);
+		}
+	}
+
 	calculateFaceLocation = (data) => {
 		const image = document.getElementById('inputImage');
 		const width = Number(image.width);
