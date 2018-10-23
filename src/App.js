@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
 
-import Constants from './constants';
+//import Constants from './constants';
+import * as Routes from './common/route_constants';
+import * as Api from './common/api_constants';
 
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
@@ -33,7 +35,7 @@ const initialState = {
 	input: '',
 	imageUrl: '',
 	boxes: [],
-	route: Constants.SIGNIN_ROUTE,
+	route: Routes.SIGNIN,
 	isSignedIn: false,
 	isProfileOpen: false,
 	user: {
@@ -58,7 +60,7 @@ class App extends Component {
 	componentDidMount(){
 		const token = window.sessionStorage.getItem('token');
 		if(token){
-			fetch(Constants.BASE_URL + '/signin', {
+			fetch(Api.BASE_URL + '/signin', {
 				method: 'post',
 				headers: {
 					'Content-Type': 'application/json',
@@ -68,7 +70,7 @@ class App extends Component {
 			.then(response => response.json())
 			.then(data => {
 				if(data && data.id){
-					fetch(Constants.BASE_URL + `/profile/${data.id}`, {
+					fetch(Api.BASE_URL + `/profile/${data.id}`, {
 						method: 'get',
 						headers: {
 							'Content-Type': 'application/json',
@@ -115,7 +117,7 @@ class App extends Component {
 	onImageSubmit = () => {
 		this.setState({imageUrl: this.state.input});
 		
-		fetch(Constants.BASE_URL + '/imageurl', {
+		fetch(Api.BASE_URL + '/imageurl', {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json'
@@ -127,7 +129,7 @@ class App extends Component {
 		.then(response => response.json())
 		.then(response => {
 			if(response){
-				fetch(Constants.BASE_URL + '/image', {
+				fetch(Api.BASE_URL + '/image', {
 					method: 'put',
 					headers: {
 						'Content-Type': 'application/json'
@@ -152,9 +154,9 @@ class App extends Component {
 	}
 
 	onRouteChange = (route) => {
-		if(route === Constants.SIGNOUT_ROUTE){
+		if(route === Routes.SIGNOUT){
 			return this.setState(initialState);
-		}else if(route === Constants.HOME_ROUTE){
+		}else if(route === Routes.HOME){
 			this.setState({isSignedIn: true});
 		}
 		
@@ -190,14 +192,14 @@ class App extends Component {
 							<Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleProfileModal} user={user} loadUser={this.loadUser}/>
 						</ProfileModal>
 				}
-				{route === Constants.HOME_ROUTE ?
+				{route === Routes.HOME ?
 					<div>
 						<Logo />
 						<Rank name={user.name} entries={user.entries}/>
 						<ImageLinkForm onInputChange={this.onInputChange} onImageSubmit={this.onImageSubmit} />
 						<FaceRecognitionResult boxes={boxes} imageUrl={imageUrl}/>
 					</div>
-					: (route === Constants.SIGNIN_ROUTE
+					: (route === Routes.SIGNIN
 					? <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
 					: <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
 					)

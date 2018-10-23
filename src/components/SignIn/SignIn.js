@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Constants from '../../constants';
+import * as Api from '../../common/api_constants';
 
 import './SignIn.css';
 
@@ -28,7 +28,7 @@ class SignIn extends React.Component {
 	}
 
 	onSubmitSignIn = () => {
-		fetch(Constants.BASE_URL + '/signin', {
+		fetch(Api.BASE_URL + '/signin', {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ class SignIn extends React.Component {
 		.then(data => {
 			if(data.userId && data.success){
 				this.saveAuthTokenInSession(data.token);
-				fetch(Constants.BASE_URL + `/profile/${data.userId}`, {
+				fetch(Api.BASE_URL + `/profile/${data.userId}`, {
 					method: 'get',
 					headers: {
 						'Content-Type': 'application/json',

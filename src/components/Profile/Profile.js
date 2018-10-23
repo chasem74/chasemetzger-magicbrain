@@ -1,7 +1,7 @@
 import React from 'react';
 import './Profile.css';
 
-import Constants from '../../constants';
+import * as Api from '../../common/api_constants';
 
 
 class Profile extends React.Component{
@@ -33,7 +33,7 @@ class Profile extends React.Component{
 	}
 
 	onProfileUpdate = (data) => {
-		fetch(Constants.BASE_URL + `/profile/${this.props.user.id}`, {
+		fetch(Api.BASE_URL + `/profile/${this.props.user.id}`, {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({formInput: data})
