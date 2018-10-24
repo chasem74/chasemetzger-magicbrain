@@ -1,8 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
+
 import './Profile.css';
 
-import * as Api from '../../common/api_constants';
-
+import * as UserActions from '../../store/actions/user';
+import * as AuthActions from '../../store/actions/auth_token';
 
 class Profile extends React.Component{
 
@@ -33,16 +35,8 @@ class Profile extends React.Component{
 	}
 
 	onProfileUpdate = (data) => {
-		fetch(Api.BASE_URL + `/profile/${this.props.user.id}`, {
-			method: 'post',
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify({formInput: data})
-		})
-		.then(response => {
-			this.props.toggleModal();
-			this.props.loadUser({...this.props.user, ...data});
-		})
-		.catch(console.log);
+		this.props.setUserData({...this.props.user});
+		this.props.toggleModal();
 	}
 
 	render(){
@@ -112,4 +106,19 @@ class Profile extends React.Component{
 	}
 };
 
-export default Profile;
+const mapStateToProps = (state) => {
+	return {
+		authToken: state.session.authToken,
+		user: state.session.user
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setAuthToken: (newToken) => dispatch(AuthActions.setAuthToken(newToken)),
+		setUserData: (userData) => dispatch(UserActions.setUserData(userData)),
+		fetchUserById: (id) => dispatch(UserActions.fetchUserById(id))
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

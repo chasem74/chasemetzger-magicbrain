@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as Api from '../../common/api_constants';
+import * as ApiConstants from '../../common/api_constants';
 
 class Register extends React.Component {
 	
@@ -31,7 +31,7 @@ class Register extends React.Component {
 	}
 
 	onSubmit = () => {
-		fetch(Api.BASE_URL + '/register', {
+		fetch(ApiConstants.BASE_URL + '/register', {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json'

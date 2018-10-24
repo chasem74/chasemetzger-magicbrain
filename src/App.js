@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+
+import {connect} from 'react-redux';
+import * as AuthActions from './store/actions/auth_token';
+import * as UserActions from './store/actions/user';
+
 import Particles from 'react-particles-js';
 
 //import Constants from './constants';
-import * as Routes from './common/route_constants';
-import * as Api from './common/api_constants';
+import * as RouteConstants from './common/route_constants';
+import * as ApiConstants from './common/api_constants';
 
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
@@ -35,59 +40,28 @@ const initialState = {
 	input: '',
 	imageUrl: '',
 	boxes: [],
-	route: Routes.SIGNIN,
+	route: RouteConstants.SIGNIN,
 	isSignedIn: false,
-	isProfileOpen: false,
-	user: {
-		id: '',
-		name: '',
-		email: '',
-		pet: '',
-		age: '',
-		entries: 0,
-		joined: ''
-	}
+	isProfileOpen: false
 };
 
 class App extends Component {
 	
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 
 		this.state = initialState;
 	}
 
 	componentDidMount(){
-		const token = window.sessionStorage.getItem('token');
-		if(token){
-			fetch(Api.BASE_URL + '/signin', {
-				method: 'post',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': token
-				}
-			})
-			.then(response => response.json())
-			.then(data => {
-				if(data && data.id){
-					fetch(Api.BASE_URL + `/profile/${data.id}`, {
-						method: 'get',
-						headers: {
-							'Content-Type': 'application/json',
-							'Authorization': token
-						}
-					})
-					.then(response => response.json())
-					.then(user => {
-						if(user && user.email){
-							this.loadUser(user);
-							this.onRouteChange('home');
-						}
-					})
-				}
-			})
-			.catch(console.log);
-		}
+		this.props.signinWithToken((id) => {
+			if(id){
+				this.props.fetchUserById(id);
+				this.onRouteChange('home');
+			}else{
+				this.onRouteChange('signin');
+			}
+		});
 	}
 
 	calculateFaceLocation = (data) => {
@@ -117,7 +91,7 @@ class App extends Component {
 	onImageSubmit = () => {
 		this.setState({imageUrl: this.state.input});
 		
-		fetch(Api.BASE_URL + '/imageurl', {
+		fetch(ApiConstants.BASE_URL + '/imageurl', {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json'
@@ -129,7 +103,7 @@ class App extends Component {
 		.then(response => response.json())
 		.then(response => {
 			if(response){
-				fetch(Api.BASE_URL + '/image', {
+				fetch(ApiConstants.BASE_URL + '/image', {
 					method: 'put',
 					headers: {
 						'Content-Type': 'application/json'
@@ -154,9 +128,11 @@ class App extends Component {
 	}
 
 	onRouteChange = (route) => {
-		if(route === Routes.SIGNOUT){
-			return this.setState(initialState);
-		}else if(route === Routes.HOME){
+		if(route === RouteConstants.SIGNOUT){
+			this.props.signout(success => {
+				this.setState(initialState);
+			});
+		}else if(route === RouteConstants.HOME){
 			this.setState({isSignedIn: true});
 		}
 		
@@ -169,39 +145,28 @@ class App extends Component {
 		}));
 	}
 
-	loadUser = (newUser) => {
-		this.setState({
-			user: {
-				id: newUser.id,
-				name: newUser.name,
-				email: newUser.email,
-				entries: newUser.entries,
-				joined: newUser.joined
-			}
-		});
-	}
-
 	render() {
-		const {isSignedIn, route, boxes, imageUrl, user, isProfileOpen} = this.state;
+		const {isSignedIn, route, boxes, imageUrl, isProfileOpen} = this.state;
+		const {user} = this.props;
 		return (
 			<div className="App">
 				<Particles className='particles' style={{width: '100%', height: '100%'}} params={particleOptions} />
 				<Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} toggleModal={this.toggleProfileModal}/>
 				{isProfileOpen &&
 						<ProfileModal>
-							<Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleProfileModal} user={user} loadUser={this.loadUser}/>
+							<Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleProfileModal}/>
 						</ProfileModal>
 				}
-				{route === Routes.HOME ?
+				{route === RouteConstants.HOME ?
 					<div>
 						<Logo />
 						<Rank name={user.name} entries={user.entries}/>
 						<ImageLinkForm onInputChange={this.onInputChange} onImageSubmit={this.onImageSubmit} />
 						<FaceRecognitionResult boxes={boxes} imageUrl={imageUrl}/>
 					</div>
-					: (route === Routes.SIGNIN
-					? <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
-					: <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
+					: (route === RouteConstants.SIGNIN
+					? <SignIn onRouteChange={this.onRouteChange}/>
+					: <Register onRouteChange={this.onRouteChange} />
 					)
 				}
 			</div>
@@ -209,4 +174,20 @@ class App extends Component {
 	}
 }
 
-export default App;
+const mapStateToProps = (state) => {
+	return {
+		authToken: state.session.authToken,
+		user: state.session.user
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		signinWithToken: (callback) => dispatch(UserActions.signinWithToken(callback)),
+		signout: (callback) => dispatch(UserActions.signout(callback)),
+		setAuthToken: (newToken) => dispatch(AuthActions.setAuthToken(newToken)),
+		fetchUserById: (id) => dispatch(UserActions.fetchUserById(id))
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

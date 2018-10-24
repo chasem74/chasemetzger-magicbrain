@@ -1,6 +1,9 @@
 import React from 'react';
 
-import * as Api from '../../common/api_constants';
+import {connect} from 'react-redux';
+
+import * as AuthActions from '../../store/actions/auth_token';
+import * as UserActions from '../../store/actions/user';
 
 import './SignIn.css';
 
@@ -24,41 +27,19 @@ class SignIn extends React.Component {
 	}
 
 	saveAuthTokenInSession = (token) => {
-		window.sessionStorage.setItem('token', token);
+		this.props.setAuthToken(token);
 	}
 
 	onSubmitSignIn = () => {
-		fetch(Api.BASE_URL + '/signin', {
-			method: 'post',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				email: this.state.signInEmail,
-				password: this.state.signInPassword
-			})
-		})
-		.then(response => response.json())
-		.then(data => {
+		this.props.signin(this.state.signInEmail, this.state.signInPassword, data => {
 			if(data.userId && data.success){
 				this.saveAuthTokenInSession(data.token);
-				fetch(Api.BASE_URL + `/profile/${data.userId}`, {
-					method: 'get',
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': data.token
-					}
-				})
-				.then(response => response.json())
-				.then(user => {
-					if(user && user.email){
-						this.props.loadUser(user);
-						this.props.onRouteChange('home');
-					}
-				})
+				this.props.fetchUserById(data.userId);
+				this.props.onRouteChange('home');
+			}else{
+				console.log(data);
 			}
-		})
-		.catch(error => console.log(error));
+		});
 	}
 
 	render(){
@@ -105,4 +86,19 @@ class SignIn extends React.Component {
 	}
 };
 
-export default SignIn;
+const mapStateToProps = (state) => {
+	return {
+		authToken: state.session.authToken,
+		user: state.session.user
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		signin: (email, password, callback) => dispatch(UserActions.signinWithEmailAndPassword(email, password, callback)),
+		setAuthToken: (newToken) => dispatch(AuthActions.setAuthToken(newToken)),
+		fetchUserById: (id) => dispatch(UserActions.fetchUserById(id))
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
