@@ -35,7 +35,7 @@ class Profile extends React.Component{
 	}
 
 	onProfileUpdate = (data) => {
-		this.props.setUserData({...this.props.user});
+		this.props.setUserData({...this.props.user, ...data});
 		this.props.toggleModal();
 	}
 
