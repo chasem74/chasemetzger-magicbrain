@@ -6,7 +6,6 @@ import * as UserActions from './store/actions/user';
 
 import Particles from 'react-particles-js';
 
-//import Constants from './constants';
 import * as RouteConstants from './common/route_constants';
 import * as ApiConstants from './common/api_constants';
 
