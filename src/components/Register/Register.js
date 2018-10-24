@@ -1,6 +1,10 @@
 import React from 'react';
 
+import {connect} from 'react-redux';
+
 import * as ApiConstants from '../../common/api_constants';
+import * as AuthActions from '../../store/actions/auth_token';
+import * as UserActions from '../../store/actions/user';
 
 class Register extends React.Component {
 	
@@ -45,8 +49,21 @@ class Register extends React.Component {
 		.then(response => response.json())
 		.then(user => {
 			if(user.id){
-				this.props.loadUser(user);	
-				this.props.onRouteChange('home');
+				this.props.signin(this.state.email, this.state.password, (data) => {
+					if(data.userId && data.success){
+						this.props.setAuthToken(data.token);
+						this.props.fetchUserById(data.userId);
+						this.props.onRouteChange('home');
+					}else{
+						this.setState({
+							errorData:{
+								failedToRegister: true,
+								message: 'Unable to register'
+							}
+						});
+					}
+				});
+				this.props.fetchUserById()
 			}else{
 				this.setState({
 					errorData:{
@@ -113,4 +130,12 @@ class Register extends React.Component {
 	}
 };
 
-export default Register;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		signin: (email, password, callback) => dispatch(UserActions.signinWithEmailAndPassword(email, password, callback)),
+		setAuthToken: (newToken) => dispatch(AuthActions.setAuthToken(newToken)),
+		fetchUserById: (id) => dispatch(UserActions.fetchUserById(id))
+	};
+}
+
+export default connect(undefined, mapDispatchToProps)(Register);
