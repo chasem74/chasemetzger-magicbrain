@@ -1,4 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
+
+import {
+	BrowserRouter as Router,
+	Route,
+	Link
+} from 'react-router-dom';
 
 import {connect} from 'react-redux';
 import * as AuthActions from './store/actions/auth_token';
@@ -44,7 +50,18 @@ const initialState = {
 	isProfileOpen: false
 };
 
-class App extends Component {
+const Home = ({user, boxes, onInputChange, onImageSubmit, imageUrl}) => {
+	return (
+		<div>
+			<Logo />
+			<Rank name={user.name} entries={user.entries}/>
+			<ImageLinkForm onInputChange={onInputChange} onImageSubmit={onImageSubmit} />
+			<FaceRecognitionResult boxes={boxes} imageUrl={imageUrl}/>
+		</div>
+	);
+};
+
+class App extends React.Component {
 	
 	constructor(props){
 		super(props);
@@ -56,7 +73,8 @@ class App extends Component {
 		this.props.signinWithToken((id) => {
 			if(id){
 				this.props.fetchUserById(id);
-				this.onRouteChange('home');
+				this.props.history.push('/');
+//				this.onRouteChange('home');
 			}else{
 				this.onRouteChange('signin');
 			}
@@ -148,27 +166,18 @@ class App extends Component {
 		const {isSignedIn, route, boxes, imageUrl, isProfileOpen} = this.state;
 		const {user} = this.props;
 		return (
-			<div className="App">
-				<Particles className='particles' style={{width: '100%', height: '100%'}} params={particleOptions} />
-				<Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} toggleModal={this.toggleProfileModal}/>
-				{isProfileOpen &&
-						<ProfileModal>
-							<Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleProfileModal}/>
-						</ProfileModal>
-				}
-				{route === RouteConstants.HOME ?
-					<div>
-						<Logo />
-						<Rank name={user.name} entries={user.entries}/>
-						<ImageLinkForm onInputChange={this.onInputChange} onImageSubmit={this.onImageSubmit} />
-						<FaceRecognitionResult boxes={boxes} imageUrl={imageUrl}/>
-					</div>
-					: (route === RouteConstants.SIGNIN
-					? <SignIn onRouteChange={this.onRouteChange}/>
-					: <Register onRouteChange={this.onRouteChange} />
-					)
-				}
-			</div>
+			<Router>
+				<div className="App">
+					<Particles className='particles' style={{width: '100%', height: '100%'}} params={particleOptions} />
+					<Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} toggleModal={this.toggleProfileModal}/>
+					{isProfileOpen &&
+							<ProfileModal>
+								<Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleProfileModal}/>
+							</ProfileModal>
+					}
+					<Route exact path="/" render={(props) => <Home {...props} user={user} boxes={boxes} onInputChange={this.onInputChange} onImageSubmit={this.onImageSubmit} imageUrl={imageUrl} />} />
+				</div>
+			</Router>
 		);
 	}
 }

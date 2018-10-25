@@ -1,5 +1,10 @@
 import React from 'react';
 
+import {
+	Link,
+	Redirect
+} from 'react-router-dom';
+
 import ProfileIcon from '../Profile/ProfileIcon';
 
 const Navigation = ({onRouteChange, isSignedIn, toggleModal}) => {
