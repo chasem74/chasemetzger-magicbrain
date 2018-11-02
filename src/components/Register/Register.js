@@ -53,7 +53,8 @@ class Register extends React.Component {
 					if(data.userId && data.success){
 						this.props.setAuthToken(data.token);
 						this.props.fetchUserById(data.userId);
-						this.props.onRouteChange('home');
+						this.props.history.push('/');
+						//this.props.onRouteChange('home');
 					}else{
 						this.setState({
 							errorData:{

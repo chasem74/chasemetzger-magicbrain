@@ -7,7 +7,7 @@ const authToken = (state = null, action) => {
 			return action.payload;
 		case ActionConstants.SIGNOUT_SUCCESS:
 		case ActionConstants.SIGNOUT_FAILED:
-			return null;
+			return state;
 		default:
 			return state;
 	}

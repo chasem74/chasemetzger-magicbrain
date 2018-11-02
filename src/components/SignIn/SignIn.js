@@ -35,7 +35,7 @@ class SignIn extends React.Component {
 			if(data.userId && data.success){
 				this.saveAuthTokenInSession(data.token);
 				this.props.fetchUserById(data.userId);
-				this.props.onRouteChange('home');
+				this.props.history.push('/');
 			}else{
 				console.log(data);
 			}
@@ -43,7 +43,6 @@ class SignIn extends React.Component {
 	}
 
 	render(){
-		const {onRouteChange} = this.props;
 		return (
 			<article className="form br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 center shadow-5">
 				<main className="pa4 black-80">
@@ -77,7 +76,7 @@ class SignIn extends React.Component {
 							onClick={this.onSubmitSignIn}/>
 						</div>
 						<div className="lh-copy mt3">
-							<p onClick={() => onRouteChange('register')} className="f6 link dim black db pointer">Register</p>
+							<p onClick={() => this.props.history.push('/register') } className="f6 link dim black db pointer">Register</p>
 						</div>
 					</div>
 				</main>

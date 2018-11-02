@@ -150,8 +150,10 @@ export const signout = (callback) => (dispatch) => {
 					})
 				}
 				window.sessionStorage.removeItem('token');
-				callback(success);
+				//callback(success);
 			})
 			.catch(console.log);
+	}else{
+		//callback(true);
 	}
 };
