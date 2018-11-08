@@ -125,6 +125,8 @@ export const signinWithToken = (callback) => (dispatch) => {
 			}
 			callback(data.id);
 		});
+	}else{
+		callback(null);
 	}
 };
 
@@ -150,10 +152,10 @@ export const signout = (callback) => (dispatch) => {
 					})
 				}
 				window.sessionStorage.removeItem('token');
-				//callback(success);
+				callback(success);
 			})
-			.catch(console.log);
+			.catch(() => callback(false));
 	}else{
-		//callback(true);
+		callback(true);
 	}
 };

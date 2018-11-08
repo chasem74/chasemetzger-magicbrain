@@ -1,12 +1,13 @@
 import React from 'react';
 
 import {
-	Link
+	Link,
+	withRouter
 } from 'react-router-dom';
 
 import ProfileIcon from '../Profile/ProfileIcon';
 
-const Navigation = ({onRouteChange, isSignedIn, signout, toggleModal, history}) => {
+const Navigation = withRouter(({onRouteChange, isSignedIn, signout, toggleModal, history}) => {
 	if(isSignedIn)
 	{
 		return (
@@ -22,6 +23,6 @@ const Navigation = ({onRouteChange, isSignedIn, signout, toggleModal, history}) 
 			</nav>
 		);
 	}
-};
+});
 
 export default Navigation;

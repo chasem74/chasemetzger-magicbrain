@@ -18,6 +18,12 @@ class SignIn extends React.Component {
 		};
 	}
 
+	componentDidMount(){
+		if(this.props.authToken){
+			this.props.history.push('/');
+		}
+	}
+
 	onEmailChange = (event) => {
 		this.setState({signInEmail: event.target.value});
 	}

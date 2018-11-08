@@ -78,7 +78,12 @@ class App extends React.Component {
 	}
 
 	componentDidMount(){
-		this.props.setAuthToken(window.sessionStorage.getItem('token'));
+		console.log(window.sessionStorage.getItem('token'));
+		const token = window.sessionStorage.getItem('token');
+		if(token){
+			this.props.setAuthToken(token);
+		}
+		//this.props.setAuthToken(window.sessionStorage.getItem('token'));
 	}
 
 	toggleProfileModal = () => {
@@ -89,7 +94,7 @@ class App extends React.Component {
 
 	render() {
 		const {isProfileOpen} = this.state;
-		const isSignedIn = (this.props.authToken !== null);
+		const isSignedIn = (this.props.authToken !== null && this.props.authToken !== undefined);
 		return (
 				<div className="App">
 					<Particles className='particles' style={{width: '100%', height: '100%'}} params={particleOptions} />
