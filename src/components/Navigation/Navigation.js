@@ -7,7 +7,7 @@ import {
 
 import ProfileIcon from '../Profile/ProfileIcon';
 
-const Navigation = withRouter(({onRouteChange, isSignedIn, signout, toggleModal, history}) => {
+const Navigation = withRouter(({isSignedIn, signout, toggleModal, history}) => {
 	if(isSignedIn)
 	{
 		return (

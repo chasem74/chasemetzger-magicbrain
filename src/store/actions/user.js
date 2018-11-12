@@ -159,3 +159,10 @@ export const signout = (callback) => (dispatch) => {
 		callback(true);
 	}
 };
+
+export const incrementEntriesForCurrentUser = () => (dispatch, getState) => {
+	dispatch({
+		type: ActionConstants.INCREMENT_ENTRY_COUNT_FOR_CURRENT_USER,
+		payload: Number(getState().session.user.entries) + 1
+	});
+};

@@ -10,7 +10,6 @@ import FaceRecognitionResult from '../FaceRecognitionResults/FaceRecognitionResu
 import * as AuthActions from '../../store/actions/auth_token';
 import * as UserActions from '../../store/actions/user';
 
-import * as RouteConstants from '../../common/route_constants';
 import * as ApiConstants from '../../common/api_constants';
 
 const initialState = {
@@ -29,7 +28,6 @@ class Home extends React.Component {
 
 	componentDidMount(){
 		this.props.signinWithToken((id) => {
-			console.log('alsdjfslfjlfjlsdf');
 			if(id){
 				this.props.fetchUserById(id);
 			}
@@ -81,17 +79,12 @@ class Home extends React.Component {
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({
-						id: this.state.user.id
+						id: this.props.user.id
 					})
 				})
 				.then(response => response.json())
 				.then(count => {
-					this.setState({
-						user: {
-							...this.state.user,
-							entries: count
-						}
-					});
+					this.props.incrementEntryCount();
 				});
 			}
 			this.setBoxesState(this.calculateFaceLocation(response))
@@ -123,7 +116,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		signinWithToken: (callback) => dispatch(UserActions.signinWithToken(callback)),
 		setAuthToken: (newToken) => dispatch(AuthActions.setAuthToken(newToken)),
-		fetchUserById: (id) => dispatch(UserActions.fetchUserById(id))
+		fetchUserById: (id) => dispatch(UserActions.fetchUserById(id)),
+		incrementEntryCount: () => dispatch(UserActions.incrementEntriesForCurrentUser())
 	};
 };
 

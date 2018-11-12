@@ -18,6 +18,11 @@ const user = (state = initialState, action) => {
 				...state,
 				...action.payload
 			}
+		case ActionContants.INCREMENT_ENTRY_COUNT_FOR_CURRENT_USER:
+			return {
+				...state,
+				entries: action.payload
+			};
 		case ActionContants.FETCH_USER_DATA_FAILED:
 		case ActionContants.SET_USER_DATA_FAILED:
 		case ActionContants.SIGNOUT_SUCCESS:
